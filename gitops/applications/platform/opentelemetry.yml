@@ -9,7 +9,7 @@ metadata:
   namespace: argocd
 spec:
   sources:
-    - repoURL: "GITHUB_DOT_COM_REPO_PLACEHOLDER"
+    - repoURL: "https://github.com/popecruzdt/enablement-openpipeline-segments-iam.git"
       targetRevision: main
       path: "gitops/manifests/platform/opentelemetry"
     - repoURL: 'https://open-telemetry.github.io/opentelemetry-helm-charts'
@@ -45,6 +45,24 @@ spec:
                     endpoint: "0.0.0.0:4317" # https://github.com/open-telemetry/opentelemetry-helm-charts/issues/222#issuecomment-1149259626
                   http:
                     endpoint: "0.0.0.0:4318"
+            processors:
+              cumulativetodelta: {}
+              resource:
+                attributes:
+                - key: k8s.pod.ip
+                  action: delete
+                - key: telemetry.sdk.name
+                  value: opentelemetry
+                  action: insert
+                - key: dynatrace.otel.collector
+                  value: platform-engineering-demo-daemonset
+                  action: insert
+                - key: dt.security_context
+                  value: platform-engineering-demo
+                  action: insert
+                - key: k8s.cluster.name
+                  value: platform-engineering-demo
+                  action: insert
             exporters:
               otlphttp:
                 endpoint: "$DT_URL/api/v2/otlp"
@@ -54,14 +72,15 @@ spec:
               pipelines:
                 traces:
                   receivers: [otlp]
-                  processors: []
+                  processors: [resource]
                   exporters: [otlphttp]
                 metrics:
                   receivers: [otlp]
-                  processors: []
+                  processors: [resource,cumulativetodelta]
                   exporters: [otlphttp]
                 logs:
-                 exporters: [otlphttp]
+                  processors: [resource]
+                  exporters: [otlphttp]
   destination:
     namespace: opentelemetry
     server: 'https://kubernetes.default.svc'
