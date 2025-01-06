@@ -1,6 +1,6 @@
 {
   "displayName": "{{.name}}",
-  "enabled": true,
+  "enabled": false,
   "nameFormat": "{ProcessGroup:KubernetesRuleResult/DT_RELEASE_PRODUCT=[a-z]+-([a-z0-9]++)} | {ProcessGroup:KubernetesRuleResult/DT_RELEASE_STAGE=([a-z0-9]++)} | {Service:DetectedName}",
   "rules": [
     {
