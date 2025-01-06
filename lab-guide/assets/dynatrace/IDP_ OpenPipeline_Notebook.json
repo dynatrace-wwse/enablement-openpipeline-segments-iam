@@ -1,0 +1,276 @@
+{
+    "version": "6",
+    "defaultTimeframe": {
+        "from": "now()-30m",
+        "to": "now()"
+    },
+    "defaultSegments": [],
+    "sections": [
+        {
+            "id": "a3cbc8eb-1750-4d28-a39f-dc39dbef236b",
+            "type": "dql",
+            "filterSegments": [],
+            "drilldownPath": [],
+            "previousFilterSegments": [],
+            "state": {
+                "input": {
+                    "value": "fetch logs\n| filter matchesPhrase(k8s.pod.name,\"simplenodeservice-\")\n| sort timestamp desc\n| fields timestamp, dt.security_context, k8s.cluster.name, k8s.namespace.name, k8s.container.name, idp_team, idp_project, idp_stage",
+                    "timeframe": {
+                        "from": "now()-2h",
+                        "to": "now()"
+                    }
+                },
+                "querySettings": {
+                    "maxResultRecords": 1000,
+                    "defaultScanLimitGbytes": 500,
+                    "maxResultMegaBytes": 1,
+                    "defaultSamplingRatio": 10,
+                    "enableSampling": false
+                },
+                "visualizationSettings": {
+                    "thresholds": [],
+                    "chartSettings": {
+                        "gapPolicy": "gap",
+                        "circleChartSettings": {
+                            "groupingThresholdType": "relative",
+                            "groupingThresholdValue": 0,
+                            "valueType": "relative"
+                        },
+                        "categoryOverrides": {},
+                        "curve": "linear",
+                        "pointsDisplay": "auto",
+                        "categoricalBarChartSettings": {
+                            "layout": "horizontal",
+                            "categoryAxisTickLayout": "horizontal",
+                            "scale": "absolute",
+                            "groupMode": "stacked",
+                            "colorPaletteMode": "multi-color"
+                        },
+                        "colorPalette": "categorical",
+                        "valueRepresentation": "absolute",
+                        "truncationMode": "middle"
+                    },
+                    "singleValue": {
+                        "showLabel": true,
+                        "label": "",
+                        "prefixIcon": "",
+                        "autoscale": true,
+                        "alignment": "center",
+                        "colorThresholdTarget": "value"
+                    },
+                    "table": {
+                        "rowDensity": "condensed",
+                        "enableSparklines": false,
+                        "hiddenColumns": [],
+                        "linewrapEnabled": false,
+                        "lineWrapIds": [],
+                        "monospacedFontEnabled": false,
+                        "monospacedFontColumns": [],
+                        "firstVisibleRowIndex": 0,
+                        "columnWidths": {},
+                        "columnTypeOverrides": []
+                    },
+                    "honeycomb": {
+                        "shape": "hexagon",
+                        "legend": {
+                            "hidden": false,
+                            "position": "auto"
+                        },
+                        "displayedFields": [],
+                        "dataMappings": {},
+                        "truncationMode": "middle",
+                        "colorMode": "color-palette",
+                        "colorPalette": "categorical"
+                    },
+                    "histogram": {
+                        "legend": "auto",
+                        "yAxis": {
+                            "label": "Frequency",
+                            "scale": "linear"
+                        },
+                        "colorPalette": "categorical",
+                        "dataMappings": [],
+                        "variant": "single",
+                        "truncationMode": "middle"
+                    }
+                }
+            }
+        },
+        {
+            "id": "7313b9c7-575c-44c0-835e-4952eec54e25",
+            "type": "dql",
+            "filterSegments": [],
+            "drilldownPath": [],
+            "previousFilterSegments": [],
+            "state": {
+                "input": {
+                    "value": "fetch logs\n| filter matchesPhrase(k8s.pod.name,\"simplenodeservice-\")\n| summarize logs = count(), by: {dt.security_context, k8s.cluster.name, k8s.namespace.name, idp_team, idp_project, idp_stage}",
+                    "timeframe": {
+                        "from": "now()-30m",
+                        "to": "now()"
+                    }
+                },
+                "querySettings": {
+                    "maxResultRecords": 1000,
+                    "defaultScanLimitGbytes": 500,
+                    "maxResultMegaBytes": 1,
+                    "defaultSamplingRatio": 10,
+                    "enableSampling": false
+                },
+                "visualizationSettings": {
+                    "thresholds": [],
+                    "chartSettings": {
+                        "gapPolicy": "gap",
+                        "circleChartSettings": {
+                            "groupingThresholdType": "relative",
+                            "groupingThresholdValue": 0,
+                            "valueType": "relative"
+                        },
+                        "categoryOverrides": {},
+                        "curve": "linear",
+                        "pointsDisplay": "auto",
+                        "categoricalBarChartSettings": {
+                            "layout": "horizontal",
+                            "categoryAxisTickLayout": "horizontal",
+                            "scale": "absolute",
+                            "groupMode": "stacked",
+                            "colorPaletteMode": "multi-color"
+                        },
+                        "colorPalette": "categorical",
+                        "valueRepresentation": "absolute",
+                        "truncationMode": "middle"
+                    },
+                    "singleValue": {
+                        "showLabel": true,
+                        "label": "",
+                        "prefixIcon": "",
+                        "autoscale": true,
+                        "alignment": "center",
+                        "colorThresholdTarget": "value"
+                    },
+                    "table": {
+                        "rowDensity": "condensed",
+                        "enableSparklines": false,
+                        "hiddenColumns": [],
+                        "linewrapEnabled": false,
+                        "lineWrapIds": [],
+                        "monospacedFontEnabled": false,
+                        "monospacedFontColumns": [],
+                        "firstVisibleRowIndex": 0,
+                        "columnWidths": {},
+                        "columnTypeOverrides": []
+                    },
+                    "honeycomb": {
+                        "shape": "hexagon",
+                        "legend": {
+                            "hidden": false,
+                            "position": "auto"
+                        },
+                        "displayedFields": [],
+                        "dataMappings": {},
+                        "truncationMode": "middle",
+                        "colorMode": "color-palette",
+                        "colorPalette": "categorical"
+                    },
+                    "histogram": {
+                        "legend": "auto",
+                        "yAxis": {
+                            "label": "Frequency",
+                            "scale": "linear"
+                        },
+                        "colorPalette": "categorical",
+                        "dataMappings": [],
+                        "variant": "single",
+                        "truncationMode": "middle"
+                    }
+                }
+            }
+        },
+        {
+            "id": "8999c666-9961-46e7-8ed6-9a17da5c1637",
+            "type": "dql",
+            "title": "Explore metrics",
+            "queryConfig": {
+                "version": "11.6.2",
+                "subQueries": [
+                    {
+                        "id": "A",
+                        "isEnabled": true,
+                        "datatype": "metrics",
+                        "metric": {
+                            "key": "dt.kubernetes.container.cpu_usage",
+                            "aggregation": "avg"
+                        }
+                    }
+                ]
+            },
+            "filterSegments": [],
+            "drilldownPath": [],
+            "previousFilterSegments": [],
+            "state": {
+                "input": {
+                    "value": "timeseries avg(dt.kubernetes.container.cpu_usage)\n| fieldsAdd dt.kubernetes.container.cpu_usage = \"avg(dt.kubernetes.container.cpu_usage)\"\n| fieldsAdd value.A = arrayAvg(`avg(dt.kubernetes.container.cpu_usage)`)",
+                    "timeframe": {
+                        "from": "now()-30m",
+                        "to": "now()"
+                    }
+                },
+                "visualization": "lineChart",
+                "querySettings": {
+                    "maxResultRecords": 1000,
+                    "defaultScanLimitGbytes": 500,
+                    "maxResultMegaBytes": 1,
+                    "defaultSamplingRatio": 10,
+                    "enableSampling": false
+                },
+                "visualizationSettings": {
+                    "autoSelectVisualization": true
+                },
+                "state": "idle"
+            }
+        },
+        {
+            "id": "00090910-f4d6-4665-a67e-858b1b6510f2",
+            "type": "dql",
+            "title": "Explore metrics",
+            "queryConfig": {
+                "version": "11.6.2",
+                "subQueries": [
+                    {
+                        "id": "A",
+                        "isEnabled": true,
+                        "datatype": "metrics",
+                        "metric": {
+                            "key": "dt.service.request.count",
+                            "aggregation": "sum"
+                        }
+                    }
+                ]
+            },
+            "filterSegments": [],
+            "drilldownPath": [],
+            "previousFilterSegments": [],
+            "state": {
+                "input": {
+                    "value": "timeseries sum(dt.service.request.count)\n| fieldsAdd dt.service.request.count = \"sum(dt.service.request.count)\"\n| fieldsAdd value.A = arrayAvg(`sum(dt.service.request.count)`)",
+                    "timeframe": {
+                        "from": "now()-30m",
+                        "to": "now()"
+                    }
+                },
+                "visualization": "lineChart",
+                "querySettings": {
+                    "maxResultRecords": 1000,
+                    "defaultScanLimitGbytes": 500,
+                    "maxResultMegaBytes": 1,
+                    "defaultSamplingRatio": 10,
+                    "enableSampling": false
+                },
+                "visualizationSettings": {
+                    "autoSelectVisualization": true
+                },
+                "state": "idle"
+            }
+        }
+    ]
+}
