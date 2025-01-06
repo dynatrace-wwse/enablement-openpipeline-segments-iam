@@ -1,6 +1,6 @@
 {
   "displayName": "{{.name}}",
-  "enabled": true,
+  "enabled": false,
   "nameFormat": "platform | {Service:DetectedName}",
   "rules": [
     {
