@@ -32,6 +32,8 @@ Follow the 4 step template to create a new application using these values:
 
 Review the new application details and click `Create`.
 
+Wait for the merge request to be merged automatically (1-2 minutes) and for ArgoCD to finish deploying the new app (3-5 minutes).
+
 ### Create Additional Components
 
 Repeat the previous steps, 3 more times, to onboard a total of (4) applications.  Use the following values:

@@ -4,19 +4,19 @@ You will need a GitHub account.
 
 The source repository for this lab is: 
 
-https://github.com/dynatrace-wwse/enablement-openpipeline-segments-iam
+[enablement-openpipeline-segments-iam](https://github.com/dynatrace-wwse/enablement-openpipeline-segments-iam)
 
 The reference repository (*not* used for this lab) is:
 
-https://github.com/dynatrace-perfclinics/platform-engineering-demo 
+[platform-engineering-demo](https://github.com/dynatrace-perfclinics/platform-engineering-demo)
 
 ### Fork Repository
 
 Create your own fork of the source repository.
 
-![Create Fork](../../../assets/images/01_02_github_create_fork.png)
+> ⚠️ Note ⚠️ running this lab will modify the repository, you will need to delete your fork and start from the beginning (new fork) every time you run this lab!
 
-*note* running this lab will modify the repository, you will need to delete your fork and start from the beginning (new fork) every time you run this lab!
+![Create Fork](../../../assets/images/01_02_github_create_fork.png)
 
 ### ⚠️ Enable Actions in your Fork ⚠️
 
@@ -38,6 +38,16 @@ In your fork, go to `Code`.  Navigate to `/apptemplates/simplenodeservice-conten
 
 Edit the file, delete all contents, and replace with `---`.  Save the file.
 
+### Configure Codespaces Settings
+
+By default, codespaces instances will suspend after 30 minutes of inactivity.  This may cause problems with your lab.
+
+Open GitHub Account settings at [https://github.com/settings/profile](https://github.com/settings/profile)
+
+![Codespaces Settings](../../../assets/images/01_02_codespaces_settings.png)
+
+Increase the `Default idle timeout` setting.
+
 ### Create Codespaces Instance
 
 In your fork:
@@ -54,6 +64,10 @@ In your fork:
 Fill in the form and launch the codespace.
 
 ![Codespaces Configuration](../../../assets/images/01_02_codespaces_machine_type.png)
+
+Be sure to select 4-core as your machine type.
+
+Choose a region close to your Dynatrace tenant.  If you run into issues with spinning up your codespaces instance, try selecting a different region.
 
 ![Codespaces Secrets](../../../assets/images/01_02_codespaces_new_secrets.png)
 
