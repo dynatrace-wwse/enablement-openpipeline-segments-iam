@@ -43,7 +43,7 @@ urn:dtaccount:e64e7279-f0b0-43e0-aedb-9eb3fa8c5cac
 
 Open the Dynatrace Account Management page.  Click on `Identity & access management`.  Click on `OAuth clients`.
 
-![OAuth Clients](../../../assets/images/01_01_oauth_clients.png)
+![OAuth Clients](lab-guide/assets/images/01_01_oauth_clients.png)
 
 Create a new OAuth Client by clicking on `Create client`.
 
@@ -69,7 +69,7 @@ Configure the client to have the following permissions:
 
 Note: Your user account must have these permissions.  Follow [the documentation](https://www.dynatrace.com/support/help/platform-modules/business-analytics/ba-api-ingest) to set up an OAuth client + policy + bind to your service user account email.
 
-![OAuth Client Details](../../../assets/images/01_01_new_oauth_client_details.png)
+![OAuth Client Details](lab-guide/assets/images/01_01_new_oauth_client_details.png)
 
 After the client is created, copy and save the client details.  Once you click `Finish`, you can never obtain the `client secret` ever again!!
 
@@ -88,7 +88,7 @@ Create a Dynatrace access token with the following permissions. This token will 
 1. `apiTokens.read`
 1. `apiTokens.write`
 
-![Dynatrace API Token](../../../assets/images/01_01_dynatrace_api_token.png)
+![Dynatrace API Token](lab-guide/assets/images/01_01_dynatrace_api_token.png)
 
 You should now have 6 pieces of information:
 
@@ -117,7 +117,7 @@ Create your own fork of the source repository.
 
 > ⚠️ Note ⚠️ running this lab will modify the repository, you will need to delete your fork and start from the beginning (new fork) every time you run this lab!
 
-![Create Fork](../../../assets/images/01_02_github_create_fork.png)
+![Create Fork](lab-guide/assets/images/01_02_github_create_fork.png)
 
 ### ⚠️ Enable Actions in your Fork ⚠️
 
@@ -127,13 +127,13 @@ This lab uses one GitHub action to automatically merge Pull Requests when apps a
 
 In your fork, go to `Actions` and click the green button: `I understand my workflows, go ahead and enable them`.
 
-![GitHub Actions](../../../assets/images/01_02_github_enable_actions.png)
+![GitHub Actions](lab-guide/assets/images/01_02_github_enable_actions.png)
 
 ### Delete ArgoCD Hook Jobs (optional)
 
 If you do not have an OAuth Client, you will not be able to execute ArgoCD Hook Jobs that generate BizEvent data.
 
-![ArgoCD Hook Jobs](../../../assets/images/01_02_argohookjobs.png)
+![ArgoCD Hook Jobs](lab-guide/assets/images/01_02_argohookjobs.png)
 
 In your fork, go to `Code`.  Navigate to `/apptemplates/simplenodeservice-content/argohookjobs.yml`.
 
@@ -145,7 +145,7 @@ By default, codespaces instances will suspend after 30 minutes of inactivity.  T
 
 Open GitHub Account settings at [https://github.com/settings/profile](https://github.com/settings/profile)
 
-![Codespaces Settings](../../../assets/images/01_02_codespaces_settings.png)
+![Codespaces Settings](lab-guide/assets/images/01_02_codespaces_settings.png)
 
 Increase the `Default idle timeout` setting.
 
@@ -158,23 +158,23 @@ In your fork:
 1. Change to `Codespaces`
 1. Click the `...` and choose `New with options...`
 
-![New Codespaces Instance](../../../assets/images/01_02_codespaces_new_with_options.png)
+![New Codespaces Instance](lab-guide/assets/images/01_02_codespaces_new_with_options.png)
 
 **Warning!** Do not click the green "Create codespace on codespace" button!!
 
 Fill in the form and launch the codespace.
 
-![Codespaces Configuration](../../../assets/images/01_02_codespaces_machine_type.png)
+![Codespaces Configuration](lab-guide/assets/images/01_02_codespaces_machine_type.png)
 
 Be sure to select 4-core as your machine type.
 
 Choose a region close to your Dynatrace tenant.  If you run into issues with spinning up your codespaces instance, try selecting a different region.
 
-![Codespaces Secrets](../../../assets/images/01_02_codespaces_new_secrets.png)
+![Codespaces Secrets](lab-guide/assets/images/01_02_codespaces_new_secrets.png)
 
 If you have **already** defined the environment variables in your repository, you'll see a screen asking you to associate those secrets with this repository. Please check the boxes as shown below.
 
-![Codespaces Existing Secrets](../../../assets/images/01_02_codespaces_existing_secrets.png)
+![Codespaces Existing Secrets](lab-guide/assets/images/01_02_codespaces_existing_secrets.png)
 
 The codespaces instance will launch and the setup scripts will execute.
 
@@ -188,13 +188,13 @@ When the codespaces instance is finished launching, go to the Terminal prompt an
 kubectl get pods -n dynatrace
 ```
 
-![Dynatrace ActiveGate Pod](../../../assets/images/01_02_dynatrace_activegate_pod.png)
+![Dynatrace ActiveGate Pod](lab-guide/assets/images/01_02_dynatrace_activegate_pod.png)
 
 Run this command every couple minutes until you see the `platform-engineering-demo-activegate-0` pod running and ready.
 
 Navigate to the Dynatrace tenant and launch the `Kubernetes` App.  You should eventually see a cluster pending activation.  Activate the Kubernetes Experience for your `platform-engineering-demo` cluster.
 
-![Dynatrace Kubernetes Experience Activation](../../../assets/images/01_02_kubernetes_experience.png)
+![Dynatrace Kubernetes Experience Activation](lab-guide/assets/images/01_02_kubernetes_experience.png)
 
 ## Launching Lab Guide
 
