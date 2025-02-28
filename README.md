@@ -129,16 +129,6 @@ In your fork, go to `Actions` and click the green button: `I understand my workf
 
 ![GitHub Actions](lab-guide/assets/images/01_02_github_enable_actions.png)
 
-### Delete ArgoCD Hook Jobs (optional)
-
-If you do not have an OAuth Client, you will not be able to execute ArgoCD Hook Jobs that generate BizEvent data.
-
-![ArgoCD Hook Jobs](lab-guide/assets/images/01_02_argohookjobs.png)
-
-In your fork, go to `Code`.  Navigate to `/apptemplates/simplenodeservice-content/argohookjobs.yml`.
-
-Edit the file, delete all contents, and replace with `---`.  Save the file.
-
 ### Configure Codespaces Settings
 
 By default, codespaces instances will suspend after 30 minutes of inactivity.  This may cause problems with your lab.
