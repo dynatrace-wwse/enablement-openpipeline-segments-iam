@@ -17,6 +17,10 @@ RUN apt-get update && \
     apt-get autoremove -y && \
     apt-get clean -y
 
+# Install Node.js for lab guide
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
+RUN apt-get install nodejs -y
+
 # Install kubectl
 RUN curl -sSL -o /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
     && chmod +x /usr/local/bin/kubectl

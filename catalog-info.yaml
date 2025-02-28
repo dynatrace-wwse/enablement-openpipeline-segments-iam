@@ -67,9 +67,9 @@ spec:
           pattern: '^\d+.\d+.\d+$'
         releaseStage:
           title: "Software Lifecycle Stage"
-          description: "Which stage is this software in? (eg. preprod)"
+          description: "Which stage is this software in? (eg. qa, staging, preprod)"
           type: string
-          default: "preprod"
+          default: "qa"
         doraEnabled:
           title: "DORA metric tracking enabled?"
           description: "Enable automatic DORA metric and OpenTelemetry trace generation for this application?"
@@ -77,17 +77,17 @@ spec:
           enum:
             - 'enabled'
             - 'not enabled'
-          default: "enabled"          
+          default: "not enabled"          
         includeSecurityScans:
           title: "Include Security scans?"
           description: "Scan this app automatically and push results to Dynatrace?"
           type: boolean
-          default: true
+          default: false
         includeDTConfig:
           title: "Include Dynatrace Configuration?"
           description: "Include level 1 (basic) Dynatrace Configuration as Code for this application?"
           type: boolean
-          default: true
+          default: false
   steps:
     - id: fetch-base
       name: Fetch Base

@@ -1,47 +1,56 @@
-# Platform Engineering Codespaces Demo
+id: enablement-openpipeline-segments-iam
 
-**Got feedback? We welcome contributions and feedback. Create an issue or email devrel@dynatrace.com**
+summary: dynatrace openpipeline segments and iam policies
 
-**Kudos go to Adam Gardner ([@agardnerIT](https://github.com/agardnerIT)) for doing most of the technical work and Katharina Sick ([@katharinasick](https://github.com/katharinasick)) for her help with Backstage.**
+author: Tony Pope-Cruz
 
-**Watch a full demo** and more on YouTube as part of [Observability Guide for Platform Engineering - Part 2](https://www.youtube.com/watch?v=YPyRg3Mso6g)
+# Enablement OpenPipeline, Segments, and IAM Policies
 
-**Download** the [Observability Guide to Platform Engineering eBook](https://dt-url.net/ebook-plateng-angr)
+During this hands-on training, we’ll deploy an internal development platform (IDP) on Kubernetes and observe it with Dynatrace. To introduce the paradigm shift from classic Management Zones to data permissions and filtering on Grail, we’ll configure OpenPipeline, Segments, and IAM Policies to provide role-based access and analysis controls.
 
-Thanks for being interested in this Platform Engineering Codespace Demo. This demo is a smaller version of our [Platform Engineering Tutorial with Dynatrace](https://github.com/dynatrace-perfclinics/platform-engineering-tutorial) that we delivered for Perform 2024 as a HOTDAY.
-This repo stands up a reference IDP (Internal Development Platform) to show case a self-service onboarding and release of applications that are automatically observed and validated with Dynatrace - all with the power of GitHub Codespaces (or any other similiar tool that supports devcontainers).
+## Dynatrace Tenant Setup
 
-![](./images/platform-engineering-demo-overview.png)
+You will need a Dynatrace SaaS tenant.
 
-The tools in this IDP include: 
-* GitHub (as your Git repo)
-* [Backstage](https://backstage.io/) (as your self-service portal)
-* [ArgoCD](https://argoproj.github.io/cd/) (as your GitOps operator)
-* [Argo Workflows](https://argoproj.github.io/workflows/) (to trigger post deployment tasks)
-* [OpenTelemetry](https://opentelemetry.io) (for standard observability)
-* [OpenFeature](https://github.com/open-feature/open-feature-operator/blob/main/docs/installation.md) (for feature flagging)
-* [Keptn](https://keptn.sh) (for deployment observability)
-* [KubeAudit](https://github.com/Shopify/kubeaudit) (for additional cluster level security checks)
-* [KubeHunter](https://github.com/aquasecurity/kube-hunter) (for additional security checks)
-* [Dynatrace](https://bit.ly/dtsaastrial) (your observability, security and automation platform)
-
-If you follow all instructions you should have your own IDP running in a GitHub Codespace within about 5-10 minutes!
-
-## Prerequisites
-
-Note: This currently only works in GitHub-hosted devcontainers. It does not run locally (yet). We are [investigating support for this](https://github.com/dynatrace-perfclinics/platform-engineering-demo/issues/5) + [Gitpod support](https://github.com/dynatrace-perfclinics/platform-engineering-demo/issues/6). If you have experience in these areas, we ❤️ contributions so get involved!
-
-### Grail enabled Dynatrace SaaS Tenant
-
-If you don't already have a Grail enabled Dynatrace SaaS tenant, sign up for a free trial here: [free 15 day Dynatrace trial](https://bit.ly/dtsaastrial)
+### Identify Dynatrace SaaS Tenant
 
 Make a note of the Dynatrace environment name. This is the first part of the URL. `abc12345` would be the environment ID for `https://abc12345.apps.dynatrace.com`
 
 * For those running in other environments (such as `sprint`), make a note of your environment: `dev`, `sprint` or `live`
 
-### Create DT oAuth Client
+### Skip DT OAuth Client (optional)
 
-> The following link will provide some oAuth permissions. To these, please **also** include the following
+> ⚠️ Stop! If you are unable to create an OAuth Client, you can still complete this lab with partial functionality ⚠️
+
+Use the following fake values for your OAuth Client:
+
+Client id: 
+```text
+dt0f02.ABC123
+```
+
+Client secret:
+```text
+dt0f02.ABC123.J5TVHCR6MJ4AAO4PX3MFGUKX4E42QJ4MUAM65DGC7ZKOHBK7DKY23WQPBKO
+```
+
+Account URN:
+```text
+urn:dtaccount:e64e7279-f0b0-43e0-aedb-9eb3fa8c5cac
+```
+
+### Create DT OAuth Client
+
+Open the Dynatrace Account Management page.  Click on `Identity & access management`.  Click on `OAuth clients`.
+
+![OAuth Clients](../../../assets/images/01_01_oauth_clients.png)
+
+Create a new OAuth Client by clicking on `Create client`.
+
+Provide your account email address and name the client `segments-client`.
+
+Configure the client to have the following permissions:
+
 > - `document:documents:write`
 > - `document:documents:read`
 > - `automation:workflows:read`
@@ -58,16 +67,18 @@ Make a note of the Dynatrace environment name. This is the first part of the URL
 > - `storage:entities:read`
 > - `storage:fieldsets:read`
 
-Follow [the documentation](https://www.dynatrace.com/support/help/platform-modules/business-analytics/ba-api-ingest) to set up an OAuth client + policy + bind to your service user account email.
+Note: Your user account must have these permissions.  Follow [the documentation](https://www.dynatrace.com/support/help/platform-modules/business-analytics/ba-api-ingest) to set up an OAuth client + policy + bind to your service user account email.
 
-This is required so that the codespace can create documents (notebooks + dashboards) in Dynatrace and the platform can send business events (aka bizevents) and to Dynatrace.
+![OAuth Client Details](../../../assets/images/01_01_new_oauth_client_details.png)
+
+After the client is created, copy and save the client details.  Once you click `Finish`, you can never obtain the `client secret` ever again!!
 
 You should now have 5 pieces of information:
 
 1. A DT environment (`dev`, `sprint` or `live`)
 1. A DT environment ID
-1. An oAuth client ID
-1. An oAuth client secret
+1. An OAuth client ID
+1. An OAuth client secret
 1. An account URN
 
 ### Create DT API Token
@@ -76,6 +87,8 @@ Create a Dynatrace access token with the following permissions. This token will 
 
 1. `apiTokens.read`
 1. `apiTokens.write`
+
+![Dynatrace API Token](../../../assets/images/01_01_dynatrace_api_token.png)
 
 You should now have 6 pieces of information:
 
@@ -86,25 +99,57 @@ You should now have 6 pieces of information:
 1. An account URN
 1. An API token
 
-### Fork Repo
+## GitHub Repository Setup
 
-Fork this repo.
+You will need a GitHub account.
 
-![just fork](images/fork_repo.png)
+The source repository for this lab is: 
+
+[enablement-openpipeline-segments-iam](https://github.com/dynatrace-wwse/enablement-openpipeline-segments-iam)
+
+The reference repository (*not* used for this lab) is:
+
+[platform-engineering-demo](https://github.com/dynatrace-perfclinics/platform-engineering-demo)
+
+### Fork Repository
+
+Create your own fork of the source repository.
+
+> ⚠️ Note ⚠️ running this lab will modify the repository, you will need to delete your fork and start from the beginning (new fork) every time you run this lab!
+
+![Create Fork](../../../assets/images/01_02_github_create_fork.png)
 
 ### ⚠️ Enable Actions in your Fork ⚠️
 
 > ⚠️ This step is important! ⚠️
 
-This demo uses one GitHub action to automatically merge Pull Requests when apps are onboarded.
+This lab uses one GitHub action to automatically merge Pull Requests when apps are onboarded.
 
 In your fork, go to `Actions` and click the green button: `I understand my workflows, go ahead and enable them`.
 
-![enable actions](images/enable_actions.png)
+![GitHub Actions](../../../assets/images/01_02_github_enable_actions.png)
 
-## Setup Instructions
+### Delete ArgoCD Hook Jobs (optional)
 
-### Create Codespace Secrets
+If you do not have an OAuth Client, you will not be able to execute ArgoCD Hook Jobs that generate BizEvent data.
+
+![ArgoCD Hook Jobs](../../../assets/images/01_02_argohookjobs.png)
+
+In your fork, go to `Code`.  Navigate to `/apptemplates/simplenodeservice-content/argohookjobs.yml`.
+
+Edit the file, delete all contents, and replace with `---`.  Save the file.
+
+### Configure Codespaces Settings
+
+By default, codespaces instances will suspend after 30 minutes of inactivity.  This may cause problems with your lab.
+
+Open GitHub Account settings at [https://github.com/settings/profile](https://github.com/settings/profile)
+
+![Codespaces Settings](../../../assets/images/01_02_codespaces_settings.png)
+
+Increase the `Default idle timeout` setting.
+
+### Create Codespaces Instance
 
 In your fork:
 
@@ -113,91 +158,78 @@ In your fork:
 1. Change to `Codespaces`
 1. Click the `...` and choose `New with options...`
 
+![New Codespaces Instance](../../../assets/images/01_02_codespaces_new_with_options.png)
+
 **Warning!** Do not click the green "Create codespace on codespace" button!!
 
 Fill in the form and launch the codespace.
 
-![codespaces new with options](images/codespace_new_with_options.jpg)
+![Codespaces Configuration](../../../assets/images/01_02_codespaces_machine_type.png)
+
+Be sure to select 4-core as your machine type.
+
+Choose a region close to your Dynatrace tenant.  If you run into issues with spinning up your codespaces instance, try selecting a different region.
+
+![Codespaces Secrets](../../../assets/images/01_02_codespaces_new_secrets.png)
 
 If you have **already** defined the environment variables in your repository, you'll see a screen asking you to associate those secrets with this repository. Please check the boxes as shown below.
 
-![codespaces associate with ](images/codespaces_associate_with_repo.png)
+![Codespaces Existing Secrets](../../../assets/images/01_02_codespaces_existing_secrets.png)
 
-The codespace will launch in a new browser window.
+The codespaces instance will launch and the setup scripts will execute.
 
 Wait until the `Running postStartCommand...` disappears. It should take ~10 minutes.
 
-## Usage Instructions
+### Activate Kubernetes Experience in Dynatrace
 
-### Login to ArgoCD
+When the codespaces instance is finished launching, go to the Terminal prompt and run the following command:
 
-Get ArgoCD password:
-
-```
-ARGOCDPWD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
-echo $ARGOCDPWD
-```
-The username is: `admin`
-
-Change to `Ports` tab and open ArgoCD (port `30100`) & log in.
-
-### Login to Backstage
-
-Backstage is also available (port `30105`).
-
-### Create An Application
-
-In Backstage (port `30105`), navigate to "Create" and use the "Create a New Application" template.
-
-Backstage will open a Pull Request on GitHub and the [automerge](.github/workflows/automerge.yml) action will immediately merge that PR (for convenience in the demo setup).
-
-The new repo will be templated into the `customer-apps` folder.
-
-When Argo picks up the app, it will become available on port `80`. Click `ports` and open the `Demo App` link.
-
-Append your application name, team name and application environment to the path in the following format:
-
-```
-https://CodeSpaceName-80.app.github.dev/simplenodeservice-team01-preprod
+```text
+kubectl get pods -n dynatrace
 ```
 
-## Observability of the Codespace
+![Dynatrace ActiveGate Pod](../../../assets/images/01_02_dynatrace_activegate_pod.png)
 
-### Self-Test OpenTelemetry traces on startup
+Run this command every couple minutes until you see the `platform-engineering-demo-activegate-0` pod running and ready.
 
-The codespace self-tests on startup so look for a trace showing the end-to-end health:
+Navigate to the Dynatrace tenant and launch the `Kubernetes` App.  You should eventually see a cluster pending activation.  Activate the Kubernetes Experience for your `platform-engineering-demo` cluster.
 
+![Dynatrace Kubernetes Experience Activation](../../../assets/images/01_02_kubernetes_experience.png)
+
+## Launching Lab Guide
+
+Move into the lab-guide directory
+
+Command:
+```sh
+cd lab-guide
 ```
-https://abc12345.sprint.apps.dynatracelabs.com/ui/apps/dynatrace.classic.distributed.traces/ui/diagnostictools/purepaths?gtf=-30m&gf=all&servicefilter=0%1E50%11codespace-platform%1067%11startup-automated-test
+
+Generate the lab guide content
+
+Command:
+```sh
+node bin/generator.js
 ```
-1. Open the `Distributed Traces` screen
-2. Filter for `Service Name ~ codespace-platform`
-3. Filter for `Span name (ingested spans only) ~ startup-automated-test`
 
-![startup trace](images/startup_trace.png)
+Launch the lab guide as a Node.js server
 
-### Logs
-
-If something goes wrong setting up the codespace, logs are sent directly to the Dynatrace SaaS ingest endpoint so `fetch logs` to see what went wrong.
-
-## Cleanup / Destroy Resources
-
-TODO. See [this issue](https://github.com/dynatrace-perfclinics/platform-engineering-demo/issues/10).
-
-## How GitHub Codespaces Works + Costs
-
-If you follow the above instructions, a GitHub Codespace will be created under your account. This is effectively a container running on GitHub's cloud infrastructure.
-
-GitHub provides generous free usage limits and (by default) sets the billing limit to $0 (so you cannot be charged without explicit consent).
-
-For most users, there will be absolutely no charge for running this demo. However, we advise deleting the codespace after this tutorial. To do so, go to [https://github.com/codespaces](https://github.com/codespaces) and delete the codespace.
-
-For more information, see [GitHub Codespaces documentation](https://docs.github.com/en/codespaces/overview).
-
-## Debugging
-
-### View Creation Log
-
+Command:
+```sh
+nohup node bin/server.js > /dev/null 2>&1 &
 ```
-tail -f /workspaces/.codespaces/.persistedshare/creation.log
+
+Move back into the base directory
+
+Command:
+```sh
+cd /workspaces/enablement-openpipeline-segments-iam
 ```
+
+Open the lab guide in your browser from the Codespaces instance exposed ports
+
+![lab guide port](assets/img/github_codespace_lab_guide_port.png)
+
+![lab guide browser](assets/img/github_codespace_lab_guide_browser.png)
+
+Use the lab guide to move through the hands on exercises.
