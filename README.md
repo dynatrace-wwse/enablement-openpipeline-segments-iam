@@ -6,6 +6,11 @@ author: Tony Pope-Cruz
 
 # Enablement OpenPipeline, Segments, and IAM Policies
 
+[![Integration tests](https://github.com/dynatrace-wwse/enablement-openpipeline-segments-iam/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/dynatrace-wwse/enablement-openpipeline-segments-iam/actions)
+[![Version](https://img.shields.io/github/v/release/dynatrace-wwse/enablement-openpipeline-segments-iam?color=blueviolet)](https://github.com/dynatrace-wwse/enablement-openpipeline-segments-iam/releases)
+[![Commits](https://img.shields.io/github/commits-since/dynatrace-wwse/enablement-openpipeline-segments-iam/latest?color=ff69b4&include_prereleases)](https://github.com/dynatrace-wwse/enablement-openpipeline-segments-iam/graphs/commit-activity)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?color=green)](https://github.com/dynatrace-wwse/enablement-openpipeline-segments-iam/blob/main/LICENSE)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-green)](https://dynatrace-wwse.github.io/enablement-openpipeline-segments-iam/)
 During this hands-on training, we’ll deploy an internal development platform (IDP) on Kubernetes and observe it with Dynatrace. To introduce the paradigm shift from classic Management Zones to data permissions and filtering on Grail, we’ll configure OpenPipeline, Segments, and IAM Policies to provide role-based access and analysis controls.
 
 ## Dynatrace Tenant Setup

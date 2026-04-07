@@ -2,3 +2,12 @@ _justforandi.txt
 notes.txt
 __pycache__
 *.env
+
+# Framework cache
+.devcontainer/.cache/
+
+# Framework base config fetched at runtime
+mkdocs-base.yaml
+
+# Temporary Dockerfile from cache for local builds
+Dockerfile.framework
