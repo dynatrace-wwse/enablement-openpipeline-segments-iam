@@ -1,7 +1,10 @@
 INHERIT: mkdocs-base.yaml
 
-site_name: "Dynatrace Enablement Lab: Openpipeline Segments Iam"
+site_name: "Dynatrace Enablement Lab: OpenPipeline Segments & IAM"
 repo_name: "View Code on GitHub"
 repo_url: "https://github.com/dynatrace-wwse/enablement-openpipeline-segments-iam"
 nav:
   - "1. About": index.md
+
+extra:
+  rum_snippet: "https://js-cdn.dynatrace.com/jstag/1612cf70810/bf81393wlb/e4bd2573b2b376ce_complete.js"
