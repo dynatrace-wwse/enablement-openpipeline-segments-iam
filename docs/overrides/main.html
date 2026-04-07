@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block libs %}
+  {{ super() }}
+  {% if config.extra.rum_snippet %}
+  <script type="text/javascript"
+    src="{{ config.extra.rum_snippet }}"
+    crossorigin="anonymous"></script>
+  {% endif %}
+{% endblock %}

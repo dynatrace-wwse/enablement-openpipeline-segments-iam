@@ -1,0 +1,30 @@
+name: deploy mkdocs to github pages
+run-name: ${{ github.event.head_commit.message }}  - deploy github pages
+permissions:
+  contents: write
+on:
+  push:
+    branches:
+      - main
+      - docs/*
+jobs:
+  deploy-github-pages:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+    - name: Checkout repository code
+      uses: actions/checkout@v4
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Fetch framework mkdocs-base.yaml
+      run: |
+        FRAMEWORK_VERSION=$(grep -oP ':-\K[^}"]+' .devcontainer/util/source_framework.sh | head -1)
+        echo "Using framework version: $FRAMEWORK_VERSION"
+        curl -fsSL "https://raw.githubusercontent.com/dynatrace-wwse/codespaces-framework/${FRAMEWORK_VERSION}/mkdocs-base.yaml" -o mkdocs-base.yaml
+    - name: MKDocs - install requirements, build, gh-deploy
+      run: |
+        pip install --break-system-packages -r docs/requirements/requirements-mkdocs.txt
+        git fetch origin gh-pages:gh-pages
+        mkdocs build
+        mkdocs gh-deploy
