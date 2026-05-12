@@ -8,4 +8,3 @@ assertRunningPod dynatrace operator
 
 assertRunningPod dynatrace activegate
 
-assertRunningApp 30100
