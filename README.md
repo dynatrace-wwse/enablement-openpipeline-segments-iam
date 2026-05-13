@@ -4,6 +4,10 @@ summary: dynatrace openpipeline segments and iam policies
 
 author: Tony Pope-Cruz
 
+> [!WARNING]
+> **This repository is archived and no longer actively maintained.**
+> It is preserved for reference purposes only. If you are interested in this content or need support, please contact the [Dynatrace Center of Excellence (CoE)](mailto:hj.sergio@gmail.com).
+
 # Enablement OpenPipeline, Segments, and IAM Policies
 
 [![Integration tests](https://github.com/dynatrace-wwse/enablement-openpipeline-segments-iam/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/dynatrace-wwse/enablement-openpipeline-segments-iam/actions)
