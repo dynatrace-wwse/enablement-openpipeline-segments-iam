@@ -25,6 +25,6 @@ jobs:
     - name: MKDocs - install requirements, build, gh-deploy
       run: |
         pip install --break-system-packages -r docs/requirements/requirements-mkdocs.txt
-        git fetch origin gh-pages:gh-pages
+        git fetch origin gh-pages:gh-pages 2>/dev/null || true
         mkdocs build
-        mkdocs gh-deploy
+        mkdocs gh-deploy --force
